@@ -31,8 +31,8 @@ const distributionRangeTable = (props) => {
   });
 
   return (
-    <form className="distributionRangeTable">
-      <table>
+    <div className="distributionRangeForm">
+      <table className="distributionRange">
         <tbody>
           <tr className="xList">
             <td>x<sub>i</sub></td>
@@ -44,7 +44,7 @@ const distributionRangeTable = (props) => {
           </tr>
         </tbody>
       </table>
-    </form>
+    </div>
   );
 }
 

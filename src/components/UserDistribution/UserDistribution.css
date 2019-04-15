@@ -1,0 +1,13 @@
+.calculationForm {
+  margin-top: 30px;
+}
+
+.distributionDashboardContainer {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+input[type="submit"].controlButton {
+  display: block;
+  padding-bottom: 7px;
+}

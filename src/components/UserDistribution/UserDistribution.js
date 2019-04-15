@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import DistributionRangeTable from '../DistributionRangeTable/DistributionRangeTable';
 import ControlledInput from '../ControlledInput/ControlledInput';
 import CalculationResult from '../CalculationResult/CalculationResult';
-import PolygonPlot from '../PolygonPlot/PolygonPlot';
-import FunctionPlot from '../FunctionPlot/FunctionPlot';
+import ErrorMessageList from '../ErrorMessageList/ErrorMessageList';
+import PolygonPlot from '../Plot/PolygonPlot/PolygonPlot';
+import FunctionPlot from '../Plot/FunctionPlot/FunctionPlot';
 import { PopulationMean, Variance, AverageVariance } from '../../math/calculations';
+import { ProbabilitiesSumIsOne, isProbabilitiesListCorrect, isFloatListCorrect } from '../../math/helpers';
 import styles from './UserDistribution.css';
 
 class UserDistribution extends Component {
@@ -25,7 +27,7 @@ class UserDistribution extends Component {
 
   handleXValues = (e) => {
     const xIndex = Number.parseInt(e.target.name.slice(1));
-    const xValue = Number.parseFloat(e.target.value);
+    const xValue = e.target.value.replace(',', '.');
     this.setState(state => {
       let x = this.state.xList;
       x.set(xIndex, xValue);
@@ -35,7 +37,7 @@ class UserDistribution extends Component {
 
   handlePValues = (e) => {
     const pIndex = Number.parseInt(e.target.name.slice(1));
-    const pValue = Number.parseFloat(e.target.value);
+    const pValue = e.target.value.replace(',', '.');
     this.setState(state => {
       let p = this.state.pList;
       p.set(pIndex, pValue);
@@ -56,12 +58,22 @@ class UserDistribution extends Component {
           pList = Array.from(this.state.pList.values(), p => Number.parseFloat(p)); 
 
     let populationMean = '', variance = '', averageVariance = '';
+
     
     let error = false;
     let errorList = [];
 
+    let isProbabilitiesCorrect = isProbabilitiesListCorrect(Array.from(this.state.pList.values()));
+    console.log(this.state.pList.values());
+
     if(xList.length != pList.length)
       errorList.push("Количество значений случайной величины не совпадает с количеством вероятностей");
+    if(!isProbabilitiesCorrect)
+      errorList.push("Вероятность значения случайной величины должна быть числом в пределах [0; 1]");
+    if(isProbabilitiesCorrect && !ProbabilitiesSumIsOne(pList))
+      errorList.push("Сумма вероятностей в ряде распределения должна быть равна 1");
+    if(!isFloatListCorrect(Array.from(this.state.xList.values())))
+      errorList.push("Значения случайной величины должны любыми целыми или десятичными числами");
 
     error = errorList.length != 0;
 
@@ -79,34 +91,46 @@ class UserDistribution extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <DistributionRangeTable 
-          valuesNumber={this.state.valuesNumber} 
-          xList={this.state.xList}
-          xListHandler={this.handleXValues} 
-          pList={this.state.pList}
-          pListHandler={this.handlePValues}/>
-        <form onSubmit={this.calculateAndPlot}>
-          <ControlledInput labelText="Количество значений ДСВ" value={this.state.valuesNumber} handler={this.handleValuesNumber}/>
-          <input type="submit" value="Вычислить характеристики"/>
+      <div className="distributionDashboardContainer">
+        <form onSubmit={this.calculateAndPlot} className="calculationForm">
+          <ControlledInput labelText="Количество значений ДСВ: " value={this.state.valuesNumber} handler={this.handleValuesNumber}/>
+          <DistributionRangeTable 
+            valuesNumber={this.state.valuesNumber} 
+            xList={this.state.xList}
+            xListHandler={this.handleXValues} 
+            pList={this.state.pList}
+            pListHandler={this.handlePValues}
+          />
+          { this.state.error ?
+            <ErrorMessageList error={this.state.error} errorList={this.state.errorList}/>
+            :
+            <CalculationResult 
+              mean={this.state.populationMean}
+              variance={this.state.variance}
+              averageVariance={this.state.averageVariance}
+            />
+          }
+          <input type="submit" className="controlButton" value="Вычислить характеристики"/>
         </form>
-        <CalculationResult 
-          mean={this.state.populationMean}
-          variance={this.state.variance}
-          averageVariance={this.state.averageVariance}
-        />
-        <PolygonPlot 
+        
+        {
+          !this.state.error &&
+          <PolygonPlot 
           xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
           pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
           domElement="polygon"  
-        />
-        <FunctionPlot 
+          /> 
+        }
+        
+        {
+          !this.state.error &&
+          <FunctionPlot 
           xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
           pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
           domElement="distribution"  
-        />
-
-      </React.Fragment>
+          /> 
+        }
+      </div>
     );
   }
 }

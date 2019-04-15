@@ -93,7 +93,7 @@ const distributionFunction = (xList, pList, domElement) => {
       y: [y],
       type: 'scatter', 
       mode: 'markers',
-      marker: { size: 6, color: "#000", symbol: 'circle-open-dot'}
+      marker: { size: 6, color: "#000", symbol: 'circle-dot'}
     };
     data.push(trace);
 

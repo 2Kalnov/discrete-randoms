@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import UserDistribution from '../../components/UserDistribution/UserDistribution';
+import styles from './MainDashboard.css';
 
 class MainDashboard extends Component {
   constructor(props) {
@@ -25,17 +26,25 @@ class MainDashboard extends Component {
     }
 
     const distributionTypeTabs = [
-      <span key="userDistribution" className={this.state.randomDistribution === 'userDistribution' ? 'active' : ''}>Задаваемый ряд распределения</span>,
-      <span key="geometricDistribution" className={this.state.randomDistribution === 'geometricDistribution' ? 'active' : ''}>Геометрическое распределение</span>
+      <span 
+        key="userDistribution" 
+        className={this.state.randomDistribution === 'userDistribution' ? 'active' : ''}
+        onClick={() => this.handleDistributionRangeChoice('userDistribution')}
+      >Задаваемый ряд распределения</span>,
+      <span 
+        key="geometricDistribution" 
+        className={this.state.randomDistribution === 'geometricDistribution' ? 'active' : ''}
+        onClick={() => this.handleDistributionRangeChoice('geometricDistribution')}
+      >Геометрическое распределение</span>
     ];
 
     return (
       <div className="layout">
-        <h1 className="page-header">Изучение распределений дискретных случайных величин</h1>
-        <div className="distributionTabs">
+        <h1 className="page-header" style={{textAlign: 'center'}}>Изучение распределений дискретных случайных величин</h1>
+        <div className="distributionTabs flexbox">
           {distributionTypeTabs}
-          {distributionDashboard}
         </div>
+        {distributionDashboard}
       </div>
     );
   }

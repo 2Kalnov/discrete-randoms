@@ -1,0 +1,15 @@
+.distributionTabs {
+  justify-content: space-evenly;
+  margin-top: 40px;
+}
+
+.distributionTabs > span {
+  display: inline-block;
+  border-bottom: 3px solid #ccc;
+  transition: all .25s ease;
+  cursor: pointer;
+}
+
+.distributionTabs > span.active {
+  border-bottom: 3px solid #e28935;
+}
