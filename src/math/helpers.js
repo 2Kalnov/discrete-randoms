@@ -36,3 +36,4 @@ const isFloatListCorrect = (list) => {
 export { checkProbabilityListSum as ProbabilitiesSumIsOne };
 export { isProbabilitiesListCorrect };
 export { isFloatListCorrect };
+export { isProbabilityValueCorrect };

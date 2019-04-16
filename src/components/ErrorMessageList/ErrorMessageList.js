@@ -3,7 +3,7 @@ import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 const errorMessageList = (props) => {
   return (
-      props.error &&
+      props.errorList.length != 0 &&
       props.errorList.map((message, index) => <ErrorMessage key={`error${index}`} message={message}/>)
   );
 }

@@ -17,6 +17,7 @@ const distributionRangeTable = (props) => {
                 labelText=''
                 value={props.xList.get(index.toString())}
                 handler={props.xListHandler}
+                options={props.cellsOptions}
               /></td>
   });
 
@@ -27,6 +28,7 @@ const distributionRangeTable = (props) => {
                 labelText=''
                 value={props.pList.get(index.toString())}
                 handler={props.pListHandler}
+                options={props.cellsOptions}
               /></td>
   });
 

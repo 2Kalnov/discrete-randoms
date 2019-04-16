@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import UserDistribution from '../../components/UserDistribution/UserDistribution';
+import PseudoGeometricDistribution from '../../components/PseudoGeometricDistribution/PseudoGeometricDistribution';
 import styles from './MainDashboard.css';
 
 class MainDashboard extends Component {
@@ -7,7 +8,7 @@ class MainDashboard extends Component {
     super(props);
 
     this.state = {
-      randomDistribution: 'userDistribution'
+      randomDistribution: 'pseudoGeometric'
     }
   }
 
@@ -18,8 +19,11 @@ class MainDashboard extends Component {
   render() {
     let distributionDashboard;
     switch(this.state.randomDistribution) {
-      case 'userDistribution':
+      case 'user':
         distributionDashboard = <UserDistribution/>;
+        break;
+      case 'pseudoGeometric':
+        distributionDashboard = <PseudoGeometricDistribution/>;
         break;
       default:
         distributionDashboard = <UserDistribution/>;
@@ -27,15 +31,15 @@ class MainDashboard extends Component {
 
     const distributionTypeTabs = [
       <span 
-        key="userDistribution" 
-        className={this.state.randomDistribution === 'userDistribution' ? 'active' : ''}
-        onClick={() => this.handleDistributionRangeChoice('userDistribution')}
+        key="user" 
+        className={this.state.randomDistribution === 'user' ? 'active' : ''}
+        onClick={() => this.handleDistributionRangeChoice('user')}
       >Задаваемый ряд распределения</span>,
       <span 
-        key="geometricDistribution" 
-        className={this.state.randomDistribution === 'geometricDistribution' ? 'active' : ''}
-        onClick={() => this.handleDistributionRangeChoice('geometricDistribution')}
-      >Геометрическое распределение</span>
+        key="pseudoGeometric" 
+        className={this.state.randomDistribution === 'pseudoGeometric' ? 'active' : ''}
+        onClick={() => this.handleDistributionRangeChoice('pseudoGeometric')}
+      >Псевдогеометрическое распределение</span>
     ];
 
     return (

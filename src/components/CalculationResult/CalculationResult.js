@@ -7,6 +7,7 @@ const calculationResult = (props) => {
       <p>Математическое ожидание: {props.mean}</p>
       <p>Дисперсия: {props.variance}</p>
       <p>Среднее квадратическое отклонение: {props.averageVariance}</p>
+      <p>Мода: {props.mode}</p>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import CalculationResult from '../CalculationResult/CalculationResult';
 import ErrorMessageList from '../ErrorMessageList/ErrorMessageList';
 import PolygonPlot from '../Plot/PolygonPlot/PolygonPlot';
 import FunctionPlot from '../Plot/FunctionPlot/FunctionPlot';
-import { PopulationMean, Variance, AverageVariance } from '../../math/calculations';
+import { PopulationMean, Variance, AverageVariance, Mode } from '../../math/calculations';
 import { ProbabilitiesSumIsOne, isProbabilitiesListCorrect, isFloatListCorrect } from '../../math/helpers';
 import styles from './UserDistribution.css';
 
@@ -20,6 +20,7 @@ class UserDistribution extends Component {
       populationMean: '',
       variance: '',
       averageVariance: '',
+      mode: '',
       error: true,
       errorList: []
     }
@@ -57,14 +58,13 @@ class UserDistribution extends Component {
     const xList = Array.from(this.state.xList.values(), x => Number.parseFloat(x)),
           pList = Array.from(this.state.pList.values(), p => Number.parseFloat(p)); 
 
-    let populationMean = '', variance = '', averageVariance = '';
+    let populationMean = '', variance = '', averageVariance = '', mode = '';
 
     
     let error = false;
     let errorList = [];
 
     let isProbabilitiesCorrect = isProbabilitiesListCorrect(Array.from(this.state.pList.values()));
-    console.log(this.state.pList.values());
 
     if(xList.length != pList.length)
       errorList.push("Количество значений случайной величины не совпадает с количеством вероятностей");
@@ -84,9 +84,10 @@ class UserDistribution extends Component {
       populationMean = PopulationMean(distributionRange);
       variance = Variance(distributionRange);
       averageVariance = AverageVariance(distributionRange);
+      mode = Mode(distributionRange);
     }
 
-    this.setState({error: error, errorList: errorList, populationMean: populationMean, variance: variance, averageVariance: averageVariance});
+    this.setState({error: error, errorList: errorList, populationMean: populationMean, variance: variance, averageVariance: averageVariance, mode: mode});
   }
 
   render() {
@@ -102,12 +103,13 @@ class UserDistribution extends Component {
             pListHandler={this.handlePValues}
           />
           { this.state.error ?
-            <ErrorMessageList error={this.state.error} errorList={this.state.errorList}/>
+            <ErrorMessageList errorList={this.state.errorList}/>
             :
             <CalculationResult 
               mean={this.state.populationMean}
               variance={this.state.variance}
               averageVariance={this.state.averageVariance}
+              mode={this.state.mode}
             />
           }
           <input type="submit" className="controlButton" value="Вычислить характеристики"/>
@@ -116,18 +118,18 @@ class UserDistribution extends Component {
         {
           !this.state.error &&
           <PolygonPlot 
-          xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
-          pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
-          domElement="polygon"  
+            xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
+            pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
+            domElement="polygon"  
           /> 
         }
         
         {
           !this.state.error &&
           <FunctionPlot 
-          xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
-          pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
-          domElement="distribution"  
+            xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
+            pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
+            domElement="distribution"  
           /> 
         }
       </div>
