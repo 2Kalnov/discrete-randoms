@@ -33,7 +33,22 @@ const isFloatListCorrect = (list) => {
   return isCorrect;
 }
 
+const formatDecimals = (number) => {
+  let numberString = number.toString();
+  let result;
+  const onlyZerosAfterDotPattern = /[\.,]0+$/;
+  const extraZerosPattern = /0+$/;
+
+  if(numberString.match(onlyZerosAfterDotPattern) === null)
+    result = numberString.replace(extraZerosPattern, '');
+  else
+    result = numberString.replace(onlyZerosAfterDotPattern, '');
+
+  return result;
+}
+
 export { checkProbabilityListSum as ProbabilitiesSumIsOne };
 export { isProbabilitiesListCorrect };
 export { isFloatListCorrect };
 export { isProbabilityValueCorrect };
+export { formatDecimals };
