@@ -49,7 +49,7 @@ const squareRandomValue = (distributionRange) => {
 
   distributionRange.forEach((p, x) => {
     let squareValue = math.pow(math.bignumber(x), 2);
-    squareXList.set(math.number(squareValue), p);
+    squareXList.set(squareValue, math.bignumber(p));
   });
 
   let uniqueXList = new Map();
