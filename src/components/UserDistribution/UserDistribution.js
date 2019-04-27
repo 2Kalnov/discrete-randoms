@@ -22,7 +22,8 @@ class UserDistribution extends Component {
       averageVariance: '',
       mode: '',
       error: true,
-      errorList: []
+      errorList: [],
+      showResults: false
     }
   }
 
@@ -32,7 +33,7 @@ class UserDistribution extends Component {
     this.setState(state => {
       let x = this.state.xList;
       x.set(xIndex, xValue);
-      return {xList: x};
+      return {xList: x, showResults: false};
     });
   }
 
@@ -42,7 +43,7 @@ class UserDistribution extends Component {
     this.setState(state => {
       let p = this.state.pList;
       p.set(pIndex, pValue);
-      return {pList: p}
+      return {pList: p, showResults: false}
     });
   }
 
@@ -55,7 +56,8 @@ class UserDistribution extends Component {
       {
         valuesNumber: valuesNumber, 
         xList: sliceMap(state.xList, 0, valuesNumber), 
-        pList: sliceMap(state.pList, 0, valuesNumber)
+        pList: sliceMap(state.pList, 0, valuesNumber),
+        showResults: false
       }
     ));
   }
@@ -94,7 +96,7 @@ class UserDistribution extends Component {
       mode = Mode(distributionRange);
     }
 
-    this.setState({error: error, errorList: errorList, populationMean: populationMean, variance: variance, averageVariance: averageVariance, mode: mode});
+    this.setState({error: error, errorList: errorList, populationMean: populationMean, variance: variance, averageVariance: averageVariance, mode: mode, showResults: true});
   }
 
   render() {
@@ -112,18 +114,20 @@ class UserDistribution extends Component {
           { this.state.error ?
             <ErrorMessageList errorList={this.state.errorList}/>
             :
-            <CalculationResult 
-              mean={this.state.populationMean}
-              variance={this.state.variance}
-              averageVariance={this.state.averageVariance}
-              mode={this.state.mode}
-            />
+            (this.state.showResults && 
+              <CalculationResult 
+                mean={this.state.populationMean}
+                variance={this.state.variance}
+                averageVariance={this.state.averageVariance}
+                mode={this.state.mode}
+              />
+            )
           }
           <input type="submit" className="controlButton" value="Вычислить характеристики"/>
         </form>
         
         {
-          !this.state.error &&
+          (!this.state.error && this.state.showResults) &&
           <PolygonPlot 
             xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
             pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
@@ -132,7 +136,7 @@ class UserDistribution extends Component {
         }
         
         {
-          !this.state.error &&
+          (!this.state.error && this.state.showResults) &&
           <FunctionPlot 
             xList={Array.from(this.state.xList.values(), x => Number.parseFloat(x))} 
             pList={Array.from(this.state.pList.values(), p => Number.parseFloat(p))}
