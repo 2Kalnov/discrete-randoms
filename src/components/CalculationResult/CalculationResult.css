@@ -1,6 +1,10 @@
-.calc-value {
+.calcValue {
   font-weight: bold;
   color: #195d19;
   font-size: 1.2em;
   margin-left: 5px;
+}
+
+.numericParameters p {
+  margin-top: 30px;
 }

@@ -52,4 +52,5 @@ input[type="submit"]:hover {
 
 .formula-image {
   max-width: 25em;
+  display: block;
 }

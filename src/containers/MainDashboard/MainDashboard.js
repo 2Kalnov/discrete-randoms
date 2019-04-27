@@ -8,7 +8,7 @@ class MainDashboard extends Component {
     super(props);
 
     this.state = {
-      randomDistribution: 'pseudoGeometric'
+      randomDistribution: 'user'
     }
   }
 
