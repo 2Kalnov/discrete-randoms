@@ -47,8 +47,28 @@ const formatDecimals = (number) => {
   return result;
 }
 
+const sliceMap = (map, startIndex, endIndex) => {
+  let iteratorPosition = 0,
+      mapIterator = map.entries(),
+      slicedMap = new Map();
+
+  for(; iteratorPosition < startIndex; iteratorPosition += 1)
+    mapIterator.next();
+
+  let iteratingDone = false;
+  for(; iteratorPosition < endIndex && !iteratingDone; iteratorPosition += 1)
+  {
+    let mapPair = mapIterator.next();
+    iteratingDone = mapPair.done;
+    if(!iteratingDone)
+      slicedMap.set(mapPair.value[0], mapPair.value[1]);
+  }
+  return slicedMap;
+}
+
 export { checkProbabilityListSum as ProbabilitiesSumIsOne };
 export { isProbabilitiesListCorrect };
 export { isFloatListCorrect };
 export { isProbabilityValueCorrect };
 export { formatDecimals };
+export { sliceMap };

@@ -6,7 +6,7 @@ import ErrorMessageList from '../ErrorMessageList/ErrorMessageList';
 import PolygonPlot from '../Plot/PolygonPlot/PolygonPlot';
 import FunctionPlot from '../Plot/FunctionPlot/FunctionPlot';
 import { PopulationMean, Variance, AverageVariance, Mode } from '../../math/calculations';
-import { ProbabilitiesSumIsOne, isProbabilitiesListCorrect, isFloatListCorrect } from '../../math/helpers';
+import { ProbabilitiesSumIsOne, isProbabilitiesListCorrect, isFloatListCorrect, sliceMap } from '../../math/helpers';
 import styles from './UserDistribution.css';
 
 class UserDistribution extends Component {
@@ -50,7 +50,14 @@ class UserDistribution extends Component {
     let valuesNumber = Number.parseInt(e.target.value);
     if(Number.isNaN(valuesNumber))
       valuesNumber = '';
-    this.setState({valuesNumber: valuesNumber});
+
+    this.setState((state) => (
+      {
+        valuesNumber: valuesNumber, 
+        xList: sliceMap(state.xList, 0, valuesNumber), 
+        pList: sliceMap(state.pList, 0, valuesNumber)
+      }
+    ));
   }
 
   calculateAndPlot = (e) => {
