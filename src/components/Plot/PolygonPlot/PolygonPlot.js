@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DistributionPolygon } from '../../../math/distributionPlots';
+import { DistributionPolygon, DistributionFunctionExpression } from '../../../math/distributionPlots';
 import styles from '../Plot.css';
 
 class PolygonPlot extends Component {
@@ -20,6 +20,7 @@ class PolygonPlot extends Component {
   render() {
     return (
       <React.Fragment>
+        <p>{DistributionFunctionExpression(this.props.xList, this.props.pList)}</p>
         <h2 className="plotName">Многоугольник распределения</h2>
         <div id={this.props.domElement}></div>
       </React.Fragment>

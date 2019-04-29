@@ -123,5 +123,31 @@ const distributionPolygon = (xList, pList, domElement) => {
   Plotly.newPlot(domElement, data, layout, {responsive: true});
 }
 
+const distributionFunctionAnalyticalExpression = (xList, pList) => {
+  let inequality;
+  let inequalities = [];
+  let segmentProbability = 0;
+  xList.forEach((x, index, list) => {
+    if(index != 0 && index != list.length - 1) {
+      inequality = `\text{${segmentProbability} при $${x}<x${list[index + 1]}\leqslant$}\\`;
+      segmentProbability += pList[index];
+    }
+    else if(index == 0) {
+      inequality = `\text{${segmentProbability} при $x\leqslant${x}$}\\`;
+      segmentProbability += pList[index];
+    }
+    else if(index = list.length - 1) 
+      inequality = `\text{${segmentProbability} при $x>${x}$}`;
+    inequalities.push(inequality);
+  });
+
+  let distributionFunctionExpression = `$$F(x)=\n\\begin{cases}`;
+  inequalities.forEach(inequality => distributionFunctionExpression + inequality);
+  distributionFunctionExpression += "\\end{cases}$$";
+
+  return distributionFunctionExpression;
+}
+
 export {distributionPolygon as DistributionPolygon};
 export {distributionFunction as DistributionFunction};
+export { distributionFunctionAnalyticalExpression as DistributionFunctionExpression };
